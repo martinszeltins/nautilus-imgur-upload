@@ -1,0 +1,47 @@
+#!/bin/bash
+file=$NAUTILUS_SCRIPT_SELECTED_FILE_PATHS
+cleaned_file=$(echo "$file" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/[\\:*?"<>|]/_/g')
+
+# API Key provided by Bart;
+# replace with your own or specify yours as IMGUR_CLIENT_ID environment variable
+# to avoid limits
+default_client_id=c9a6efb3d7932fd
+client_id="${IMGUR_CLIENT_ID:=$default_client_id}"
+
+# Function to upload a path
+# First argument should be a content spec understood by curl's -F option
+function upload {
+	curl -s -H "Authorization: Client-ID $client_id" -H "Expect: " -F "image=@$cleaned_file" https://api.imgur.com/3/image.xml
+}
+
+clip=""
+errors=false
+
+# Check file exists
+if [ "$cleaned_file" != "-" -a ! -f "$cleaned_file" ]; then
+    notify-send "Imgur: File does not exist"
+    errors=true
+    exit 1
+fi
+
+response=$(upload "@$cleaned_file") 2>/dev/null
+
+if echo "$response" | grep -q 'success="0"'; then
+    errors=true
+    notify-send "Error uploading image to imgur, unsuccessful response"
+    exit 1
+fi
+
+# Parse the response and output our stuff
+url="${response##*<link>}"
+url="${url%%</link>*}"
+
+echo -n "$url" | xclip -selection clipboard
+
+if $errors; then
+    notify-send "Failed uploading image to imgur"
+	exit 1
+else
+    notify-send "Image uploaded to imgur an copied to clipboard!"
+fi
+
