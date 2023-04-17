@@ -8,6 +8,13 @@ ICON_NAME="imgur.png"
 ICON_SRC="$SRC_DIR/$ICON_NAME"
 ICON_DST="$HOME/.local/share/icons/hicolor/128x128/apps"
 
+# Install xclip if it's not already installed
+if ! command -v xclip &> /dev/null
+then
+    echo "Installing xclip... \n"
+    sudo apt install xclip -y
+fi
+
 # Create the destination directories if they don't exist
 mkdir -p "$DST_DIR"
 mkdir -p "$ICON_DST"
