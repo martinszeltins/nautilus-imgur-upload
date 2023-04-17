@@ -22,6 +22,6 @@ chmod +x "$DST_DIR/$SCRIPT_NAME"
 cp "$ICON_SRC" "$ICON_DST/$ICON_NAME"
 
 # Set the icon for the "Upload to Imgur" script
-gio set -t string "$DST_DIR/$SCRIPT_NAME" "metadata::custom-icon" "file://$ICON_DST/$ICON_NAME.png"
+gio set -t string "$DST_DIR/$SCRIPT_NAME" "metadata::custom-icon" "file://$ICON_DST/$ICON_NAME"
 
 echo "Installation complete. Now you can right-click on an image in Nautilus and select Scripts -> Upload to Imgur."
