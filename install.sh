@@ -15,6 +15,13 @@ then
     sudo apt install xclip -y
 fi
 
+# Install curl if it's not already installed
+if ! command -v curl &> /dev/null
+then
+    echo "Installing curl... \n"
+    sudo apt install curl -y
+fi
+
 # Create the destination directories if they don't exist
 mkdir -p "$DST_DIR"
 mkdir -p "$ICON_DST"
