@@ -32,3 +32,6 @@ cp "$ICON_SRC" "$ICON_DST/$ICON_NAME"
 gio set -t string "$DST_DIR/$SCRIPT_NAME" "metadata::custom-icon" "file://$ICON_DST/$ICON_NAME"
 
 echo "Installation complete. Now you can right-click on an image in Nautilus and select Scripts -> Upload to Imgur."
+
+# Open the destination directory in Nautilus
+nautilus "$DST_DIR"
